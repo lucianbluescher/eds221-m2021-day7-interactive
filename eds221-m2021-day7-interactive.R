@@ -5,6 +5,7 @@ rm(list = ls())
 library(tidyverse)
 library(palmerpenguins)
 library(lubridate) # help us work with dates
+library(datapasta)
 
 # Data Wrangling refresher
 # 1. only include penguins at Briscoe and Dream Isalnds
@@ -36,6 +37,56 @@ penguins_tidy_2 <- penguins |>
             standard_dev = sd(flipper_length_mm),
             sample_size = n())
 
+# Use Datapasta to add Data Frame
+
+animals <- data.frame(
+  stringsAsFactors = FALSE,
+          location = c("lagoon", "bluff", "creek", "oaks", "bluff"),
+           species = c("bobcat", "coyote", "fox", "squirrel", "bobcat"),
+          maturity = c("adult", "juvenile", "adult", "juvenile", "adult")
+)
+
+sites <- data.frame(
+  stringsAsFactors = FALSE,
+          location = c("beach", "lagoon", "bluff", "oaks"),
+    full_site_name = c("Goleta Beach","UCSB Lagoon",
+                       "Ellwood Mesa","Fremont Campground"),
+      jurisdiction = c("SB City", "UCSB", "SB City", "USFS")
+)
+
+
+# Practice using join functions
+# Full join practice
+# Keeps all rows and adds all columns
+
+full_join_example <- full_join(animals, sites)
+full_join_example
+
+# Left join
+left_join(x = animals, y = sites)
+
+# Right join
+right_join(x = animals, y = sites)
+# same as left_join_example <- left_join(x = sites, y = animals)
+
+# Inner Join
+inner_join(animals, sites)
+
+## Filtering Joins
+
+# Semi Join
+semi_join(animals, sites)
+# Same as
+animals |>
+  filter(location %in$ sites$location)
+
+# Anti Join
+anti_join(animals, sites)
+# Same as
+animals |>
+  filter(!location %in% sites$location)
+
+anti_join(sites, animals)
 
 
 
